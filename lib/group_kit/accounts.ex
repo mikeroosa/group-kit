@@ -1,23 +1,59 @@
 defmodule GroupKit.Accounts do
-    @moduledoc """
-    The Accounts context.
-    """
+  @moduledoc """
+  The Accounts context.
+  """
+  alias GroupKit.Repo
+  alias GroupKit.Accounts.User
 
-    alias GroupKit.Accounts.User
+  def list_users do
+    Repo.all(User)
+  end
 
-    def list_users do
-        [
-            %User{id: "1", name: "Mike Roosa", username: "mikeroosa"},
-            %User{id: "2", name: "Dylan Jones", username: "dylanjones"},
-            %User{id: "3", name: "Larry Leesker", username: "larry2121"}
-        ]
+  def get_user(id) do
+    Repo.get(User, id)
+  end
+
+  def get_user!(id) do
+    Repo.get!(User, id)
+  end
+
+  def get_user_by(params) do
+    Repo.get_by(User, params)
+  end
+
+  def change_user(%User{} = user) do
+    User.changeset(user, %{})
+  end
+
+  def create_user(attrs \\ %{}) do
+    %User{}
+    |> User.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  def change_registration(%User{} = user, params) do
+    User.registration_changeset(user, params)
+  end
+
+  def register_user(attrs \\ %{}) do
+    %User{}
+    |> User.registration_changeset(attrs)
+    |> Repo.insert()
+  end
+
+  def authenticate_by_username_and_password(username, password) do
+    user = get_user_by(username: username)
+
+    cond do
+      user && Pbkdf2.verify_pass(password, user.password_hash) ->
+        {:ok, user}
+
+      user ->
+        {:error, :unauthorized}
+
+      true ->
+        Pbkdf2.no_user_verify()
+        {:error, :not_found}
     end
-
-    def get_user(id) do
-        Enum.find(list_users(), fn map -> map.id == id end)
-    end
-
-    def get_user_by(params) do
-        Enum.find(list_users(), fn map -> Enum.all?(params, fn {key, val} -> Map.get(map, key) == val end) end)
-    end
+  end
 end

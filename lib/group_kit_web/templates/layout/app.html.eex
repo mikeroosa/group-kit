@@ -10,7 +10,23 @@
   </head>
   <body class="font-sans text-base antialiased bg-gray-100 text-gray-800 text-center mx-10 my-3">
     <header>
-        <!--<h1 class="text-purple-700 text-3xl text-left font-semibold">GroupKit</h1>-->
+        <section class="container">
+          <nav role="navigation">
+          <ul>
+          <%= if @current_user do %>
+          <li><%= @current_user.username %></li>
+          <li>
+          <%= link "Log out",
+          to: Routes.session_path(@conn, :delete, @current_user),
+          method: "delete" %>
+          </li>
+          <% else %>
+          <li><%= link "Register", to: Routes.user_path(@conn, :new) %></li>
+          <li><%= link "Log in", to: Routes.session_path(@conn, :new) %></li>
+          <% end %>
+          </ul>
+          </nav>
+          </section>
     </header>
     <main role="main">
       <p class="" role="alert"><%= get_flash(@conn, :info) %></p>

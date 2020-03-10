@@ -1,8 +1,8 @@
 <h2>List Users</h2>
+<div><%= link "New User", to: Routes.user_path(@conn, :new)%></div>
 <%= for user <- @users do %>
     <div>
-        <%= first_name(user) %>
-        <%= user.id %>
+        <%= render "user.html", user: user %>
         <%= link "View", to: Routes.user_path(@conn, :show, user.id)%>
     </div>
 <% end %>
