@@ -16,6 +16,8 @@ defmodule GroupKitWeb.Router do
   scope "/", GroupKitWeb do
     pipe_through :browser
 
+    get "/users", UserController, :index
+    get "/users/:id", UserController, :show
     get "/", PageController, :index
   end
 
