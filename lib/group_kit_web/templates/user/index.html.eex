@@ -1,8 +1,24 @@
-<h2>List Users</h2>
+<h2 class="text-3xl text-left mb-2">All Users</h2>
+<h3><%= length(@users) %> users</h3>
 <div><%= link "New User", to: Routes.user_path(@conn, :new)%></div>
+
+<table>
+<tr>
+    <th>Name</th>
+    <th>Username</th>
+    <th>Email Address</th>
+    <th>Type</th>
+</tr>
 <%= for user <- @users do %>
-    <div>
+    <tr>
+    <td><%= user.name%></td>
+    <td><%= user.username%></td>
+    <td>mike.roosa@gmail.com</td>
+    <td>Owner</td>
+    <%# <div>
         <%= render "user.html", user: user %>
         <%= link "View", to: Routes.user_path(@conn, :show, user.id)%>
-    </div>
+    </div> %>
+    </tr>
 <% end %>
+</table>
