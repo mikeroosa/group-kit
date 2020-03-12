@@ -7,9 +7,9 @@ defmodule GroupKit.Repo.Migrations.CreateMembers do
       add :first_name, :string
       add :last_name, :string
       add :is_subscribed, :boolean, default: false, null: false
+      add :team_id, references(:teams, on_delete: :nothing), null: false
 
       timestamps()
     end
-
   end
 end

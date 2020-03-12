@@ -23,6 +23,7 @@ defmodule GroupKitWeb do
 
       import Plug.Conn
       import GroupKitWeb.Gettext
+      import GroupKitWeb.Auth, only: [authenticate_user: 2]
       alias GroupKitWeb.Router.Helpers, as: Routes
     end
   end
@@ -50,6 +51,7 @@ defmodule GroupKitWeb do
       use Phoenix.Router
       import Plug.Conn
       import Phoenix.Controller
+      import GroupKitWeb.Auth, only: [authenticate_user: 2]
     end
   end
 
